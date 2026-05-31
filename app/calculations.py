@@ -19,11 +19,16 @@ def fibonacci(n: int) -> int:
     return b
 
 
+MAX_FACTORIAL_N = 10_000
+
+
 def factorial(n: int) -> int:
     if not isinstance(n, int) or isinstance(n, bool):
         raise TypeError("n must be an integer")
     if n < 0:
         raise ValueError("n must be a non-negative integer")
+    if n > MAX_FACTORIAL_N:
+        raise ValueError(f"n must be <= {MAX_FACTORIAL_N} to avoid excessive computation")
 
     result = 1
     for i in range(2, n + 1):

@@ -9,7 +9,8 @@ A small FastAPI service that exposes three calculation endpoints: Fibonacci, Fac
 ├── app/
 │   ├── __init__.py
 │   ├── calculations.py   # Pure business logic
-│   └── api.py            # FastAPI endpoints
+│   ├── models.py         # Pydantic request models & validation
+│   └── routes.py         # FastAPI app & endpoints
 ├── tests/
 │   ├── __init__.py
 │   └── test_calculations.py
@@ -31,7 +32,7 @@ source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # Start the server
-uvicorn app.api:app --reload
+uvicorn app.routes:app --reload
 ```
 
 The API will be available at `http://localhost:8000`.  
@@ -88,8 +89,8 @@ Returns the fixed monthly payment rounded to 2 decimal places.
 ## Assumptions & Limitations
 
 - **Fibonacci / Factorial inputs** must be non-negative integers. Floats, booleans, and negative numbers are rejected with a `422` response.
+- **Factorial cap** — inputs are limited to `n <= 10,000` to avoid excessive computation time. Larger values are rejected with a `422` response.
 - **Loan repayment** uses Python's `Decimal` type internally to avoid floating-point rounding errors. Results are rounded to 2 decimal places using ROUND_HALF_UP.
 - **Zero-interest loans** (`annual_rate = 0`) are handled as equal principal-only instalments: `monthly = principal / months`.
-- **Large factorials** are supported — Python's native `int` has arbitrary precision, so there is no overflow.
 - **No persistence** — all calculations are stateless; nothing is stored between requests.
 - **No authentication** — the API is open; add an auth layer before exposing it publicly.

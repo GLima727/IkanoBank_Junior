@@ -7,7 +7,7 @@ class FibonacciRequest(BaseModel):
 
     @field_validator("n")
     @classmethod
-    def n_must_be_non_negative(cls, v):
+    def is_n_positive(cls, v):
         if v < 0:
             raise ValueError("n must be a non-negative integer")
         return v
@@ -18,7 +18,7 @@ class FactorialRequest(BaseModel):
 
     @field_validator("n")
     @classmethod
-    def n_must_be_non_negative(cls, v):
+    def is_n_inbounds(cls, v):
         if v < 0:
             raise ValueError("n must be a non-negative integer")
         if v > MAX_FACTORIAL_N:
@@ -35,21 +35,21 @@ class LoanRepaymentRequest(BaseModel):
 
     @field_validator("principal")
     @classmethod
-    def principal_must_be_positive(cls, v):
+    def is_principal_positive(cls, v):
         if v <= 0:
             raise ValueError("principal must be greater than zero")
         return v
 
     @field_validator("annual_rate")
     @classmethod
-    def rate_must_be_non_negative(cls, v):
+    def is_rate_positive(cls, v):
         if v < 0:
             raise ValueError("annual_rate must be non-negative")
         return v
 
     @field_validator("months")
     @classmethod
-    def months_must_be_positive(cls, v):
+    def is_months_positive(cls, v):
         if v <= 0:
             raise ValueError("months must be greater than zero")
         return v

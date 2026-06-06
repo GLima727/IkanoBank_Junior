@@ -1,9 +1,5 @@
-from decimal import Decimal, ROUND_HALF_UP
-
-
 def fibonacci(n: int) -> int:
-    if not isinstance(n, int) or isinstance(n, bool):
-        raise TypeError("n must be an integer")
+
     if n < 0:
         raise ValueError("n must be a non-negative integer")
 
@@ -13,7 +9,7 @@ def fibonacci(n: int) -> int:
         return 1
 
     a, b = 0, 1
-    
+
     for _ in range(2, n + 1):
         a, b = b, a + b
     return b
@@ -23,12 +19,13 @@ MAX_FACTORIAL_N = 10_000
 
 
 def factorial(n: int) -> int:
-    if not isinstance(n, int) or isinstance(n, bool):
-        raise TypeError("n must be an integer")
+
     if n < 0:
         raise ValueError("n must be a non-negative integer")
     if n > MAX_FACTORIAL_N:
-        raise ValueError(f"n must be <= {MAX_FACTORIAL_N} to avoid excessive computation")
+        raise ValueError(
+            f"n must be <= {MAX_FACTORIAL_N} to avoid excessive computation"
+        )
 
     result = 1
     for i in range(2, n + 1):
@@ -37,8 +34,7 @@ def factorial(n: int) -> int:
 
 
 def loan_repayment(principal: float, annual_rate: float, months: int) -> float:
-    if not isinstance(months, int) or isinstance(months, bool):
-        raise TypeError("months must be an integer")
+
     if principal <= 0:
         raise ValueError("principal must be greater than zero")
     if annual_rate < 0:
@@ -46,14 +42,9 @@ def loan_repayment(principal: float, annual_rate: float, months: int) -> float:
     if months <= 0:
         raise ValueError("months must be greater than zero")
 
-    p = Decimal(str(principal))
-    r_annual = Decimal(str(annual_rate))
-    n = Decimal(str(months))
+    if annual_rate == 0:
+        return round(principal / months, 2)
 
-    if r_annual == 0:
-        monthly = p / n
-    else:
-        r = r_annual / Decimal("100") / Decimal("12")
-        monthly = p * r * (1 + r) ** int(n) / ((1 + r) ** int(n) - 1)
-
-    return float(monthly.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+    r = (annual_rate / 100) / 12
+    monthly = principal * r * (1 + r) ** months / ((1 + r) ** months - 1)
+    return round(monthly, 2)

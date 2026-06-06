@@ -22,7 +22,9 @@ class FactorialRequest(BaseModel):
         if v < 0:
             raise ValueError("n must be a non-negative integer")
         if v > MAX_FACTORIAL_N:
-            raise ValueError(f"n must be <= {MAX_FACTORIAL_N} to avoid excessive computation")
+            raise ValueError(
+                f"n must be <= {MAX_FACTORIAL_N} to avoid excessive computation"
+            )
         return v
 
 

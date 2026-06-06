@@ -13,7 +13,8 @@ A small FastAPI service that exposes three calculation endpoints: Fibonacci, Fac
 │   └── routes.py         # FastAPI app & endpoints
 ├── tests/
 │   ├── __init__.py
-│   └── test_calculations.py
+│   ├── test_calculations.py  # Unit tests for business logic
+│   └── test_routes.py        # Integration tests for API endpoints
 ├── Dockerfile
 ├── requirements.txt
 └── README.md
@@ -90,7 +91,7 @@ Returns the fixed monthly payment rounded to 2 decimal places.
 
 - **Fibonacci / Factorial inputs** must be non-negative integers. Floats, booleans, and negative numbers are rejected with a `422` response.
 - **Factorial cap** — inputs are limited to `n <= 10,000` to avoid excessive computation time. Larger values are rejected with a `422` response.
-- **Loan repayment** uses Python's `Decimal` type internally to avoid floating-point rounding errors. Results are rounded to 2 decimal places using ROUND_HALF_UP.
+- **Loan repayment** results are rounded to 2 decimal places using Python's built-in `round()`. Possible improvement: switch to `Decimal` with `ROUND_HALF_UP` for stricter financial rounding.
 - **Zero-interest loans** (`annual_rate = 0`) are handled as equal principal-only instalments: `monthly = principal / months`.
 - **No persistence** — all calculations are stateless; nothing is stored between requests.
 - **No authentication** — the API is open; add an auth layer before exposing it publicly.
